@@ -16,4 +16,14 @@
         <constructor-arg value="cache_logs.txt"/>
     </bean>
 
+    <bean id="combinedEventLogger" class="com.epam.spring.core.logger.CombinedEventLogger">
+        <constructor-arg>
+            <list>
+                <ref bean="fileEventLogger"/>
+                <ref bean="cacheFileLogger"/>
+                <ref bean="eventLogger"/>
+            </list>
+        </constructor-arg>
+    </bean>
+
 </beans>

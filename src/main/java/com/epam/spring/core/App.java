@@ -1,52 +1,51 @@
 package com.epam.spring.core;
 
-import com.epam.spring.core.logger.CacheFileEventLogger;
+import com.epam.spring.core.enums.EventType;
 import com.epam.spring.core.logger.ConsoleEventLogger;
-import com.epam.spring.core.logger.FileEventLogger;
+import com.epam.spring.core.logger.EventLogger;
 import com.epam.spring.core.model.Client;
 import com.epam.spring.core.model.Event;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.util.Map;
+
+import static java.util.Objects.nonNull;
+
 public class App {
 
     private Client client;
-    private ConsoleEventLogger eventLogger;
-    private FileEventLogger fileEventLogger;
-    private CacheFileEventLogger cacheFileEventLogger;
+    private ConsoleEventLogger defaultLogger;
+    private Map<EventType, EventLogger> loggers;
 
-    private App(Client client, ConsoleEventLogger eventLogger, FileEventLogger fileEventLogger, CacheFileEventLogger cacheFileEventLogger) {
+    private App(Client client, ConsoleEventLogger eventLogger, Map<EventType, EventLogger> loggers) {
         this.client = client;
-        this.eventLogger = eventLogger;
-        this.fileEventLogger = fileEventLogger;
-        this.cacheFileEventLogger = cacheFileEventLogger;
+        this.defaultLogger = eventLogger;
+        this.loggers = loggers;
     }
 
-    public void logEvent(Event event) {
+    public void logEvent(Event event, String msg) {
+        event.setMsg(msg);
+        EventLogger eventLogger = loggers.get(event.getEventType());
+        if (nonNull(eventLogger)) {
+            eventLogger.logEvent(event);
+        } else {
+            defaultLogger.logEvent(event);
+        }
 
-        String message = String.format("%d: %s", client.getId(), client.getFullName());
-        event.setMsg(message);
-        eventLogger.logEvent(event);
-        fileEventLogger.logEvent(event);
-        cacheFileEventLogger.logEvent(event);
     }
 
     public static void main(String[] args) {
         ConfigurableApplicationContext ctx = new ClassPathXmlApplicationContext("spring.xml");
         App app = (App) ctx.getBean("app");
         Event event = (Event) ctx.getBean("event");
+        event.setEventType(EventType.ERROR);
         Event event2 = (Event) ctx.getBean("event");
-        Event event3 = (Event) ctx.getBean("event");
-        Event event4 = (Event) ctx.getBean("event");
+        event2.setEventType(EventType.INFO);
 
         app.client = new Client(1L, "Ivan Petrov");
-        app.eventLogger = new ConsoleEventLogger();
-
-
-        app.logEvent(event);
-        app.logEvent(event2);
-        app.logEvent(event3);
-        app.logEvent(event4);
+        app.logEvent(event, "message");
+        app.logEvent(event2, "message2");
         ctx.close();
     }
 }

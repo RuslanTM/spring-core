@@ -1,5 +1,7 @@
 package com.epam.spring.core.model;
 
+import com.epam.spring.core.enums.EventType;
+
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -8,6 +10,7 @@ public class Event {
     private String msg;
     private Date date;
     private DateFormat df;
+    private EventType eventType;
 
     public Event(Date date, DateFormat df) {
         this.date = date;
@@ -33,6 +36,14 @@ public class Event {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public EventType getEventType() {
+        return eventType;
+    }
+
+    public void setEventType(EventType eventType) {
+        this.eventType = eventType;
     }
 
     @Override
