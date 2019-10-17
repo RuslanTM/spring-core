@@ -39,13 +39,14 @@ public class App {
         ConfigurableApplicationContext ctx = new ClassPathXmlApplicationContext("spring.xml");
         App app = (App) ctx.getBean("app");
         Event event = (Event) ctx.getBean("event");
-        event.setEventType(EventType.ERROR);
         Event event2 = (Event) ctx.getBean("event");
+        app.client = (Client) ctx.getBean("client");
+
+        event.setEventType(EventType.ERROR);
         event2.setEventType(EventType.INFO);
 
-        app.client = new Client(1L, "Ivan Petrov");
-        app.logEvent(event, "message");
-        app.logEvent(event2, "message2");
+        app.logEvent(event, app.client.getFullName());
+        app.logEvent(event2, app.client.getFullName());
         ctx.close();
     }
 }
