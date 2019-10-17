@@ -29,7 +29,7 @@
         </constructor-arg>
     </bean>
 
-    <bean id="event" class="com.epam.spring.core.model.Event" scope="prototype">
+<!--    <bean id="event" class="com.epam.spring.core.model.Event" scope="prototype">
 
         <constructor-arg>
             <bean class="java.util.Date"/>
@@ -38,7 +38,7 @@
             <bean id="dateFormat" class="java.text.DateFormat"
                   factory-method="getDateTimeInstance"/>
         </constructor-arg>
-    </bean>
+    </bean>-->
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">

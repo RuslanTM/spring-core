@@ -2,7 +2,9 @@ package com.epam.spring.core.logger;
 
 import com.epam.spring.core.model.Event;
 import org.apache.commons.io.FileUtils;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 
@@ -23,6 +25,7 @@ public class FileEventLogger implements EventLogger {
         }
     }
 
+    @PostConstruct
     public void init() throws IOException {
         this.file = new File(this.fileName);
         file.canWrite();
