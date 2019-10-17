@@ -3,6 +3,7 @@ package com.epam.spring.core.model;
 import com.epam.spring.core.enums.EventType;
 
 import java.text.DateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Event {
@@ -53,6 +54,15 @@ public class Event {
                 ", msg='" + msg + '\'' +
                 ", date=" + df.format(date) +
                 "}\n";
+
+    }
+
+    public String isDay() {
+        LocalDateTime now = LocalDateTime.now();
+        if (now.getHour() >= 8 && now.getHour() <= 17) {
+            return Boolean.TRUE.toString();
+        }
+        return Boolean.FALSE.toString();
 
     }
 }

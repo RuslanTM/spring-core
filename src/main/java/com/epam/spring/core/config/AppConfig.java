@@ -1,5 +1,7 @@
 package com.epam.spring.core.config;
 
+import com.epam.spring.core.App;
+import com.epam.spring.core.model.Client;
 import com.epam.spring.core.model.Event;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
@@ -27,4 +29,15 @@ public class AppConfig {
     public PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
         return new PropertyPlaceholderConfigurer();
     }
+
+    @Bean
+    public Client client() {
+        return new Client(1L, "Petrov Ivan");
+    }
+
+    @Bean
+    public App app() {
+        return new App();
+    }
+
 }
