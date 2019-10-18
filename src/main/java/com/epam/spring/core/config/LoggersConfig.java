@@ -5,10 +5,12 @@ import com.epam.spring.core.logger.CombinedEventLogger;
 import com.epam.spring.core.logger.FileEventLogger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
 import java.util.Arrays;
 
-@ComponentScan(basePackages = "com.epam.spring.core.logger")
+@Configuration
+@ComponentScan(basePackages = {"com.epam.spring.core.logger", "com.epam.spring.core.util"})
 public class LoggersConfig {
 
     @Bean
@@ -19,10 +21,5 @@ public class LoggersConfig {
     @Bean
     public CacheFileEventLogger cacheFileEventLogger() {
         return new CacheFileEventLogger(3, "cache_logs.txt");
-    }
-
-    @Bean
-    public CombinedEventLogger combinedEventLogger() {
-        return new CombinedEventLogger(Arrays.asList(fileEventLogger(), cacheFileEventLogger()));
     }
 }

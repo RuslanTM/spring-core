@@ -6,6 +6,7 @@ import com.epam.spring.core.model.Event;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
@@ -14,8 +15,9 @@ import java.text.DateFormat;
 import java.util.Date;
 
 @Configuration
+@EnableAspectJAutoProxy
 @Import(LoggersConfig.class)
-@PropertySource(value = {"classpath:properties/client.properties"},
+@PropertySource(value = {"classpath:client.properties"},
         ignoreResourceNotFound = true)
 public class AppConfig {
 
@@ -26,7 +28,7 @@ public class AppConfig {
     }
 
     @Bean
-    public PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
+    public static PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
         return new PropertyPlaceholderConfigurer();
     }
 

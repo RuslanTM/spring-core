@@ -8,6 +8,7 @@ import com.epam.spring.core.logger.EventLogger;
 import com.epam.spring.core.logger.FileEventLogger;
 import com.epam.spring.core.model.Client;
 import com.epam.spring.core.model.Event;
+import com.epam.spring.core.util.StatisticsAspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -23,9 +24,11 @@ public class App {
     @Autowired
     private EventLogger consoleEventLogger;
     @Autowired
-    private FileEventLogger fileEventLogger;
+    private EventLogger fileEventLogger;
     @Autowired
-    private CombinedEventLogger combinedEventLogger;
+    private EventLogger combinedEventLogger;
+    @Autowired
+    private StatisticsAspect statisticsAspect;
 
     private Map<EventType, EventLogger> loggers = new HashMap();
 
@@ -40,10 +43,10 @@ public class App {
     public void logEvent(Event event, String msg) {
         event.setMsg(msg);
         EventLogger eventLogger = loggers.get(event.getEventType());
-        if (nonNull(eventLogger)) {
+        if (loggers.isEmpty()) {
             eventLogger.logEvent(event);
         } else {
-            consoleEventLogger.logEvent(event);
+            combinedEventLogger.logEvent(event);
         }
 
     }
@@ -62,6 +65,9 @@ public class App {
 
         app.logEvent(event, app.client.getFullName());
         app.logEvent(event2, app.client.getGreeting());
-        ((AnnotationConfigApplicationContext) annotationCtx).stop();
+        Map<Class<?>, Integer> counter = app.statisticsAspect.getCounter();
+        counter.entrySet().stream()
+                .peek(entry -> System.out.println(entry.getKey() + ": " + entry.getValue()));
+       // ((AnnotationConfigApplicationContext) annotationCtx).stop();
     }
 }
