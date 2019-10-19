@@ -19,7 +19,7 @@ import java.util.Map;
 import static java.util.Objects.nonNull;
 
 public class App {
-    @Autowired
+
     private Client client;
     @Autowired
     private EventLogger consoleEventLogger;
@@ -65,9 +65,9 @@ public class App {
 
         app.logEvent(event, app.client.getFullName());
         app.logEvent(event2, app.client.getGreeting());
-        Map<Class<?>, Integer> counter = app.statisticsAspect.getCounter();
-        counter.entrySet().stream()
-                .peek(entry -> System.out.println(entry.getKey() + ": " + entry.getValue()));
-       // ((AnnotationConfigApplicationContext) annotationCtx).stop();
+        app.logEvent(event2, app.client.getGreeting());
+        app.logEvent(event, app.client.getGreeting());
+        app.logEvent(event, app.client.getGreeting());
+        ((AnnotationConfigApplicationContext) annotationCtx).stop();
     }
 }
