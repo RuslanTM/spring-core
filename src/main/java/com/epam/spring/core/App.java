@@ -33,6 +33,7 @@ public class App {
     private Map<EventType, EventLogger> loggers = new HashMap();
 
     public App() {
+        System.out.println("Hello world");
     }
 
     {
